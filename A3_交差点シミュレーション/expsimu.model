@@ -1,0 +1,1274 @@
+//====================================================================/
+//　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　/
+// artisoc                                                            /
+//                                                                    /
+//====================================================================/
+
+Version = 4.2.1;
+
+
+
+//-------------------------------------------------------
+// Component Tree
+//-------------------------------------------------------
+UNIVERSE {
+    Space traffic(0,0),Square_2D(50, 50, Loop, North, 1, !Map_3D){
+        AgtType car(0, 0)[1] {
+            Dim ID(0, 0) As Integer = (0);
+            Dim X(0, 0) As Double = (0.0);
+            Dim Y(0, 0) As Double = (0.0);
+            Dim Layer(0, 0) As Integer = (0);
+            Dim Direction(0, 0) As Double = (0.0);
+            Dim speed(0, 0) As Integer = (0);
+            Dim color(0, 0) As Integer = (0);
+            Dim go(0, 0) As Boolean = (0);
+            Dim aroundcar(0, 0) As AgtSet = ();
+            Dim type(0, 0) As Integer = (0);
+            Dim turnf(0, 0) As Boolean = (0);
+            Dim 対向車(0, 0) As AgtSet = ();
+            Dim 右折(0, 0) As Boolean = (0);
+        }
+        AgtType road(0, 0)[2] {
+            Dim ID(0, 0) As Integer = (0);
+            Dim X(0, 0) As Double = (0.0);
+            Dim Y(0, 0) As Double = (0.0);
+            Dim Layer(0, 0) As Integer = (0);
+            Dim Direction(0, 0) As Double = (0.0);
+        }
+        AgtType start(0, 0)[4] {
+            Dim ID(0, 0) As Integer = (0);
+            Dim X(0, 0) As Double = (0.0);
+            Dim Y(0, 0) As Double = (0.0);
+            Dim Layer(0, 0) As Integer = (0);
+            Dim Direction(0, 0) As Double = (0.0);
+            Dim createspeed(0, 0) As Integer = (0);
+            Dim color(0, 0) As Integer = (0);
+        }
+        AgtType car2(0, 0)[1] {
+            Dim ID(0, 0) As Integer = (0);
+            Dim X(0, 0) As Double = (0.0);
+            Dim Y(0, 0) As Double = (0.0);
+            Dim Layer(0, 0) As Integer = (0);
+            Dim Direction(0, 0) As Double = (0.0);
+            Dim speed(0, 0) As Integer = (0);
+            Dim color(0, 0) As Integer = (0);
+            Dim go(0, 0) As Boolean = (0);
+            Dim aroundcar(0, 0) As AgtSet = ();
+            Dim 対向車(0, 0) As AgtSet = ();
+            Dim 右折(0, 0) As Boolean = (0);
+            Dim type(0, 0) As Integer = (0);
+            Dim turnf(0, 0) As Boolean = (0);
+        }
+        AgtType car3(0, 0)[1] {
+            Dim ID(0, 0) As Integer = (0);
+            Dim X(0, 0) As Double = (0.0);
+            Dim Y(0, 0) As Double = (0.0);
+            Dim Layer(0, 0) As Integer = (0);
+            Dim Direction(0, 0) As Double = (0.0);
+            Dim speed(0, 0) As Integer = (0);
+            Dim color(0, 0) As Integer = (0);
+            Dim go(0, 0) As Boolean = (0);
+            Dim aroundcar(0, 0) As AgtSet = ();
+            Dim type(0, 0) As Integer = (0);
+            Dim turnf(0, 0) As Boolean = (0);
+            Dim 対向車(0, 0) As AgtSet = ();
+            Dim 右折(0, 0) As Boolean = (0);
+        }
+        AgtType car4(0, 0)[1] {
+            Dim ID(0, 0) As Integer = (0);
+            Dim X(0, 0) As Double = (0.0);
+            Dim Y(0, 0) As Double = (0.0);
+            Dim Layer(0, 0) As Integer = (0);
+            Dim Direction(0, 0) As Double = (0.0);
+            Dim speed(0, 0) As Integer = (0);
+            Dim color(0, 0) As Integer = (0);
+            Dim aroundcar(0, 0) As AgtSet = ();
+            Dim go(0, 0) As Boolean = (0);
+            Dim type(0, 0) As Integer = (0);
+            Dim turnf(0, 0) As Boolean = (0);
+            Dim 対向車(0, 0) As AgtSet = ();
+            Dim 右折(0, 0) As Boolean = (0);
+        }
+        Dim flag(0, 0)[50][50][1] As Boolean = (2500*0);
+        AgtType t_light(0, 0)[1] {
+            Dim ID(0, 0) As Integer = (0);
+            Dim X(0, 0) As Double = (0.0);
+            Dim Y(0, 0) As Double = (0.0);
+            Dim Layer(0, 0) As Integer = (0);
+            Dim Direction(0, 0) As Double = (0.0);
+            Dim time(0, 0) As Integer = (0);
+            Dim changetraffic(0, 0) As Integer = (0);
+            Dim color(0, 0) As Integer = (0);
+        }
+        AgtType t_light2(0, 0)[1] {
+            Dim ID(0, 0) As Integer = (0);
+            Dim X(0, 0) As Double = (0.0);
+            Dim Y(0, 0) As Double = (0.0);
+            Dim Layer(0, 0) As Integer = (0);
+            Dim Direction(0, 0) As Double = (0.0);
+            Dim color(0, 0) As Integer = (0);
+            Dim time(0, 0) As Integer = (0);
+            Dim changetraffic(0, 0) As Integer = (0);
+        }
+    }
+    Dim car_maximum(0, 0) As Integer = (0);
+    Dim counter(0, 0) As Integer = (0);
+    Dim d_car(0, 0) As Integer = (0);
+    Dim point(0, 0) As Integer = ();
+    Dim waittime(0, 0) As Integer = ();
+}
+
+
+//-------------------------------------------------------
+// Agent Variable Initial Data
+//-------------------------------------------------------
+Initial_Value {
+    UNIVERSE.TRAFFIC.CAR.GO = 1(0);
+    UNIVERSE.TRAFFIC.CAR.TURNF = 1(0);
+    UNIVERSE.TRAFFIC.CAR2.GO = 1(0);
+}
+
+
+//-------------------------------------------------------
+// Agent Rule
+//-------------------------------------------------------
+#begin_rule UNIVERSE
+Univ_Init{
+   Dim 信号機1 As Agt
+   Dim 信号機2 As Agt
+   Dim 信号機3 As Agt
+   Dim 信号機4 As Agt
+
+   信号機1 = CreateAgt(Universe.traffic.t_light)
+   信号機2 = CreateAgt(Universe.traffic.t_light)
+   信号機3 = CreateAgt(Universe.traffic.t_light2)
+   信号機4 = CreateAgt(Universe.traffic.t_light2)
+   信号機1.X = 32
+   信号機1.Y = 18
+   信号機2.X = 18
+   信号機2.Y = 32
+   信号機3.X = 18
+   信号機3.Y = 18
+   信号機4.X = 32
+   信号機4.Y = 32
+
+/*
+   Dim car1 As Agt
+   Dim car2 As Agt
+   Dim car3 As Agt
+   Dim car4 As Agt
+   Dim i As Integer
+   Universe.car_maximum = 100
+   Dim random As Integer
+
+   //random = Int((4 * Rnd()) + 1)
+		For i=1 To Universe.car_maximum
+		  random = Int((4 * Rnd()) + 1)
+		  If random == 1 Then
+		  	  car1 = CreateAgt(Universe.traffic.car)
+			ElseIf  random == 2 Then
+					car2 = CreateAgt(Universe.traffic.car2)
+			ElseIf  random == 3 Then
+					car3 = CreateAgt(Universe.traffic.car3)
+			Else  
+					car4 = CreateAgt(Universe.traffic.car4)
+			End If
+		Next i 
+
+		*/
+
+		 Universe.car_maximum = 50
+  			
+}
+
+Univ_Step_Begin{
+
+	Dim car1 As Agt
+   Dim car2 As Agt
+   Dim car3 As Agt
+   Dim car4 As Agt
+   //Dim i As Integer
+   Universe.car_maximum = 100
+   Dim random As Integer
+   random = Int((4 * Rnd()) + 1)
+   　
+   Universe.counter = Universe.counter + 1
+   If Universe.counter Mod 2 == 0 Then
+   	  IF random == 1 Then
+					car1 = CreateAgt(Universe.traffic.car)
+			ElseIf random == 2 Then
+					car2 = CreateAgt(Universe.traffic.car2)
+			ElseIf random == 3 Then
+					car3 = CreateAgt(Universe.traffic.car3)
+			ElseIf random == 4 Then
+					car4 = CreateAgt(Universe.traffic.car4)
+	    End If
+	 End If
+	 
+
+}
+
+Univ_Step_End{
+	if Universe.d_car > 99 then
+		ExitSimulation()
+	End If
+}
+
+Univ_Finish{
+	PrintLn("finish score=" & Universe.point)
+	PrintLn("finish time=" & Universe.counter)
+	//PrintLn("wait time=" & Universe.waittime)
+}
+#end_rule UNIVERSE
+
+
+
+
+//-------------------------------------------------------
+// Agent Rule
+//-------------------------------------------------------
+#begin_rule UNIVERSE.TRAFFIC.CAR
+Agt_Init{
+	My.color = COLOR_MAZENTA
+	My.Y = 29
+	My.X = 0
+	Turn(0)
+	My.type = Int((3 * Rnd()) + 1)
+	//0は直進, 1は左折, 2は右折
+}
+//左側からの発進
+
+
+Agt_Step{
+  Universe.point = Universe.point +1
+　//前進できるか判断
+	Dim own As AgtSet
+	MakeAgtSet(own, Universe.traffic.car)
+	MakeAgtSetAroundPositionCell(My.aroundcar, Universe.traffic, My.X+2, My.Y, 0, 1.8, own)
+	If CountAgtSet(My.aroundcar) > 0  And My.X < 42 Then 
+			My.go = false
+			//My.color = COLOR_MAZENTA
+	Else 
+	    My.go = TRUE
+	    If My.type == 3 Then
+					My.color = COLOR_CYAN
+			Else
+					My.color = COLOR_BLUE
+	    End If
+	End If
+
+	
+	//右折できるか判断
+	Dim oppo As AgtSet
+	MakeAgtSet(oppo, Universe.traffic.car2)
+	MakeAgtSetAroundPositionCell(My.対向車, Universe.traffic, 35, 17, 0, 6, oppo)
+	If CountAgtSet(My.対向車) > 0  And My.X >= 27 Then 
+			My.右折 = false
+	Else 
+	    My.右折 = TRUE
+	End If
+	
+	//直進
+If My.type == 1 Then
+		If (Universe.traffic.t_light2(0).changetraffic == 0  Or My.X< 10) And My.go == TRUE Then
+				Forward(1)
+				My.X = My.X +1
+		ElseIf (Universe.traffic.t_light2(0).changetraffic > 0 And My.X > 13)  And My.go == TRUE Then
+  			Forward(1)
+				My.X = My.X +1
+		End If
+//左折
+ElseIf My.type == 2 Then
+		If (Universe.traffic.t_light2(0).changetraffic == 0  Or My.X< 10) And My.go == TRUE Then
+		
+				If My.turnf == FALSE Then
+				Forward(1)
+				My.X = My.X +1
+				End If
+				
+				If My.X >= 23 And My.turnf == FALSE Then
+					Turn(90)
+					My.turnf = TRUE
+				Else 
+					Forward(1)
+				End If
+		ElseIf (Universe.traffic.t_light2(0).changetraffic > 0 And My.X > 13)  And My.go == TRUE Then
+  			If My.turnf == FALSE Then
+				Forward(1)
+				My.X = My.X +1
+				End If
+				
+				If My.X >= 22 And My.turnf == FALSE Then
+					Turn(90)
+					My.turnf = TRUE
+				Else
+					Forward(1)
+				End If
+		End If
+ElseIf My.type == 3 Then
+//右折
+		If (Universe.traffic.t_light2(0).changetraffic == 0  Or My.X< 10) And My.go == TRUE Then
+				/*If My.turnf == FALSE Then
+				Forward(0.5)
+				My.X = My.X +0.5
+				End If
+				*/
+
+				If My.X == 1 Then
+				 My.Y = My.Y - 3
+				End If
+				
+				If My.X >= 27 And My.turnf == FALSE And My.右折 == True Then
+					Turn(270)
+					My.turnf = TRUE
+				ElseIf My.右折 == False And My.turnf == false Then
+					Forward(0)
+				Else
+				 Forward(1)
+				End If
+		ElseIf (Universe.traffic.t_light2(0).changetraffic > 0 And My.X > 13)  And My.go == TRUE Then
+  			If My.turnf == FALSE Then
+				Forward(1)
+				My.X = My.X +1
+				End If
+				
+				If My.X >= 27 And My.turnf == FALSE Then
+					Turn(270)
+					My.turnf = TRUE
+				Else
+					Forward(1)
+				End If
+		End If
+End If
+
+	
+	If My.X  >= 50 Or  My.Y <=  0 Or My.Y >= 50 Then
+					KillAgt(My)
+					Universe.d_car = Universe.d_car + 1
+	End If
+}
+#end_rule UNIVERSE.TRAFFIC.CAR
+
+
+
+
+//-------------------------------------------------------
+// Agent Rule
+//-------------------------------------------------------
+#begin_rule UNIVERSE.TRAFFIC.ROAD
+Agt_Init{
+
+}
+
+Agt_Step{
+
+}
+#end_rule UNIVERSE.TRAFFIC.ROAD
+
+
+
+
+//-------------------------------------------------------
+// Agent Rule
+//-------------------------------------------------------
+#begin_rule UNIVERSE.TRAFFIC.START
+Agt_Init{
+	Dim carset As AgtSet
+
+	//MakeAgtSet(myAgtSet, Universe.traffic.car)
+	
+}
+
+Agt_Step{
+			
+}
+#end_rule UNIVERSE.TRAFFIC.START
+
+
+
+
+//-------------------------------------------------------
+// Agent Rule
+//-------------------------------------------------------
+#begin_rule UNIVERSE.TRAFFIC.CAR2
+Agt_Init{
+	My.color = COLOR_MAZENTA
+	My.Y = 21
+  My.X = 50
+	My.Direction = 180
+	My.type = Int((3 * Rnd()) + 1)
+  //0は直進, 1は左折, 2は右折
+}
+//右側から
+
+Agt_Step{
+ Universe.point = Universe.point +1
+Dim own As AgtSet
+	MakeAgtSet(own, Universe.traffic.car2)
+	MakeAgtSetAroundPositionCell(My.aroundcar, Universe.traffic, My.X-2, My.Y, 0, 1.8, own)
+	If CountAgtSet(My.aroundcar) > 0  And My.X > 8 Then 
+			My.go = false
+	Else 
+	    My.go = TRUE
+	    If My.type == 3 Then
+					My.color = COLOR_CYAN
+			Else
+					My.color = COLOR_BLUE
+	    End If
+	End If
+
+//右折できるか判断
+	Dim oppo As AgtSet
+	MakeAgtSet(oppo, Universe.traffic.car)
+	MakeAgtSetAroundPositionCell(My.対向車, Universe.traffic, 15, 33, 0, 6, oppo)
+	If CountAgtSet(My.対向車) > 0  And My.X <= 23 Then 
+			My.右折 = false
+	Else 
+	    My.右折 = TRUE
+	End If
+
+//直進
+If My.type == 1 Then
+		If (Universe.traffic.t_light2(0).changetraffic == 0  Or My.X> 40) And My.go == TRUE Then
+				Forward(1)
+				My.X = My.X -1
+		ElseIf (Universe.traffic.t_light2(0).changetraffic > 0 And My.X < 37)  And My.go == TRUE Then
+  			Forward(1)
+				My.X = My.X -1
+		End If
+//左折
+ElseIf My.type == 2 Then
+		If (Universe.traffic.t_light2(0).changetraffic == 0  Or My.X> 40) And My.go == TRUE Then
+				
+				If My.turnf == FALSE Then
+				Forward(1)
+				My.X = My.X -1
+				End If
+				
+				If My.X <= 27 And My.turnf == FALSE Then
+					Turn(90)
+					My.turnf = TRUE
+				Else 
+					Forward(1)
+				End If
+		ElseIf (Universe.traffic.t_light2(0).changetraffic > 0 And My.X < 37)  And My.go == TRUE Then
+  			If My.turnf == FALSE Then
+				Forward(1)
+				My.X = My.X -1
+				End If
+				
+				If My.X <= 28 And My.turnf == FALSE Then
+					Turn(90)
+					My.turnf = TRUE
+				Else
+					Forward(1)
+				End If
+		End If
+ElseIf My.type == 3 Then
+	//右折
+		If (Universe.traffic.t_light2(0).changetraffic == 0  Or My.X > 40) And My.go == TRUE  Then
+
+				If My.X== 49  Then
+					My.Y=My.Y+ 3
+				End If
+
+				If My.X<=23 And My.turnf == FALSE And My.右折==True Then
+						Turn(270)
+						My.turnf=True
+				ElseIf My.右折==FALSE And My.turnf==false Then
+						Forward(0)
+				Else
+						Forward(1)
+				End If
+		Elseif  (Universe.traffic.t_light2(0).changetraffic > 0 And My.X < 37) And My.go == TRUE Then
+				If My.turnf==FALSE Then
+  					Forward(1)
+						My.X = My.X - 1
+				End If
+
+				If My.X<=23 And My.turnf==FALSE Then
+						Turn(270)
+						My.turnf=True
+				Else
+						Forward(1)
+				End If
+		End If
+	End If
+
+	If My.X  <= 0 Or My.Y <=  0 Or My.Y >= 50 Then
+					 KillAgt(My)
+					 Universe.d_car = Universe.d_car + 1
+	End If
+}
+#end_rule UNIVERSE.TRAFFIC.CAR2
+
+
+
+
+//-------------------------------------------------------
+// Agent Rule
+//-------------------------------------------------------
+#begin_rule UNIVERSE.TRAFFIC.CAR3
+Agt_Init{
+	My.color = COLOR_MAZENTA
+	My.X = 21
+	My.Y = 0
+	My.Direction = 90
+	My.type = Int((3 * Rnd()) + 1)
+	//0は直進, 1は左折, 2は右折
+}
+
+
+Agt_Step{
+ Universe.point = Universe.point +1
+  //前進できるか判断
+  Dim own As AgtSet
+	MakeAgtSet(own, Universe.traffic.car3)
+	MakeAgtSetAroundPositionCell(My.aroundcar, Universe.traffic, My.X, My.Y+2, 0, 1.8, own)
+	If CountAgtSet(My.aroundcar) > 0  And My.Y < 42 Then 
+			My.go = FALSE
+	Else
+	    My.go = TRUE
+	    If My.type == 3 Then
+					My.color = COLOR_CYAN
+			Else
+					My.color = COLOR_BLUE
+	    End If
+	End If
+
+//右折できるか判断
+	Dim oppo As AgtSet
+	MakeAgtSet(oppo, Universe.traffic.car4)
+	MakeAgtSetAroundPositionCell(My.対向車, Universe.traffic, 31, 35, 0, 6, oppo)
+	If CountAgtSet(My.対向車) > 0  And My.Y >= 27 Then 
+			My.右折 = false
+	Else 
+	    My.右折 = TRUE
+	End If
+
+		//直進
+If My.type == 1 Then
+		If (Universe.traffic.t_light(0).changetraffic == 0  Or My.Y< 10) And My.go == TRUE Then
+				Forward(1)
+				My.Y = My.Y +1
+		ElseIf (Universe.traffic.t_light(0).changetraffic > 0 And My.Y > 13)  And My.go == TRUE Then
+  			Forward(1)
+				My.Y = My.Y +1
+		End If
+	//左折
+ElseIf My.type == 2 Then
+		If (Universe.traffic.t_light(0).changetraffic == 0  Or My.Y< 10) And My.go == TRUE Then
+		
+				If My.turnf == FALSE Then
+				Forward(1)
+				My.Y = My.Y +1
+				End If
+				
+				If My.Y >= 23 And My.turnf == FALSE Then
+					Turn(90)
+					My.turnf = TRUE
+				Else 
+					Forward(1)
+				End If
+		ElseIf (Universe.traffic.t_light(0).changetraffic > 0 And My.Y > 13)  And My.go == TRUE Then
+  			If My.turnf == FALSE Then
+				Forward(1)
+				My.Y = My.Y +1
+				End If
+				
+				If My.Y >= 22 And My.turnf == FALSE Then
+					Turn(90)
+					My.turnf = TRUE
+				Else
+					Forward(1)
+				End If
+		End If
+//右折
+ElseIf My.type == 3 Then
+			If (Universe.traffic.t_light(0).changetraffic == 0  Or My.Y< 10) And My.go == TRUE Then
+
+				If My.Y == 1 Then
+				 My.X = My.X + 3
+				End If
+				
+				If My.Y >= 27 And My.turnf == FALSE And My.右折 == True Then
+					Turn(270)
+					My.turnf = TRUE
+				ElseIf My.右折 == False And My.turnf == false Then
+					Forward(0)
+				Else
+				 Forward(1)
+				End If
+		ElseIf (Universe.traffic.t_light(0).changetraffic > 0 And My.Y > 13)  And My.go == TRUE Then
+  			If My.turnf == FALSE Then
+				Forward(1)
+				My.Y = My.Y +1
+				End If
+				
+				If My.Y >= 27 And My.turnf == FALSE Then
+					Turn(270)
+					My.turnf = TRUE
+				Else
+					Forward(1)
+				End If
+		End If
+End If
+
+	If My.X  >= 50 Or My.X <=  0 Or My.Y >= 50 Then
+					 KillAgt(My)
+					 Universe.d_car = Universe.d_car + 1
+	End If
+}
+#end_rule UNIVERSE.TRAFFIC.CAR3
+
+
+
+
+//-------------------------------------------------------
+// Agent Rule
+//-------------------------------------------------------
+#begin_rule UNIVERSE.TRAFFIC.CAR4
+Agt_Init{
+	My.color = COLOR_MAZENTA
+	My.X = 29
+	My.Y = 50
+	My.Direction = 270
+	My.type = Int((3 * Rnd()) + 1)
+	//0は直進, 1は左折, 2は右折
+}
+
+
+Agt_Step{
+ Universe.point = Universe.point +1
+//前進できるか判断
+Dim own As AgtSet
+	MakeAgtSet(own, Universe.traffic.car4)
+	MakeAgtSetAroundPositionCell(My.aroundcar, Universe.traffic, My.X, My.Y-2, 0, 1.8, own)
+	If CountAgtSet(My.aroundcar) > 0  And My.Y > 8 Then 
+			My.go = FALSE
+	Else 
+	    My.go = TRUE
+	    If My.type == 3 Then
+					My.color = COLOR_CYAN
+			Else
+					My.color = COLOR_BLUE
+	    End If
+	End If
+
+//右折できるか判断
+	Dim oppo As AgtSet
+	MakeAgtSet(oppo, Universe.traffic.car3)
+	MakeAgtSetAroundPositionCell(My.対向車, Universe.traffic, 17, 15, 0, 6, oppo)
+	If CountAgtSet(My.対向車) > 0  And My.Y <= 23 Then 
+			My.右折 = false
+	Else 
+	    My.右折 = TRUE
+	End If
+	
+//直進
+If My.type == 1 Then
+		If (Universe.traffic.t_light(0).changetraffic == 0  Or My.Y> 40) And My.go == TRUE Then
+				Forward(1)
+				My.Y = My.Y - 1
+		ElseIf (Universe.traffic.t_light(0).changetraffic > 0 And My.Y < 37)  And My.go == TRUE Then
+  			Forward(1)
+				My.Y = My.Y - 1
+    End If
+	//左折
+ElseIf My.type == 2 Then
+		If (Universe.traffic.t_light(0).changetraffic == 0  Or My.Y > 40) And My.go == TRUE Then
+		
+				If My.turnf == FALSE Then
+				Forward(1)
+				My.Y = My.Y - 1
+				End If
+				
+				If My.Y <= 27 And My.turnf == FALSE Then
+					Turn(0)
+					My.turnf = TRUE
+				Else 
+					Forward(1)
+				End If
+		ElseIf (Universe.traffic.t_light(0).changetraffic > 0 And My.Y < 37)  And My.go == TRUE Then
+  			If My.turnf == FALSE Then
+				Forward(1)
+				My.Y = My.Y -1
+				End If
+				
+				If My.Y <= 28 And My.turnf == FALSE Then
+					Turn(0)
+					My.turnf = TRUE
+				Else
+					Forward(1)
+				End If
+		End If
+//右折
+ElseIf My.type == 3 Then
+			If (Universe.traffic.t_light(0).changetraffic == 0  Or My.Y> 40) And My.go == TRUE Then
+
+				If My.Y == 49 Then
+				 My.X = My.X - 3
+				End If
+				
+				If My.Y <= 23 And My.turnf == FALSE And My.右折 == True Then
+					Turn(-90)
+					My.turnf = TRUE
+				ElseIf My.右折 == False And My.turnf == false Then
+					Forward(0)
+				Else
+				 Forward(1)
+				End If
+		ElseIf (Universe.traffic.t_light(0).changetraffic > 0 And My.Y < 37)  And My.go == TRUE Then
+  			If My.turnf == FALSE Then
+				Forward(1)
+				My.Y = My.Y -1
+				End If
+				
+				If My.Y <= 23 And My.turnf == FALSE Then
+					Turn(-90)
+					My.turnf = TRUE
+				Else
+					Forward(1)
+				End If
+		End If
+End If
+	
+	If My.X  >= 50 Or My.X <=  0 Or My.Y <= 0 Then
+					 KillAgt(My)
+					 Universe.d_car = Universe.d_car + 1
+	End If
+}
+#end_rule UNIVERSE.TRAFFIC.CAR4
+
+
+
+
+//-------------------------------------------------------
+// Agent Rule
+//-------------------------------------------------------
+#begin_rule UNIVERSE.TRAFFIC.T_LIGHT
+Agt_Init{
+  My.color = COLOR_GREEN
+  My.X = 18
+  My.Y = 32
+}
+//縦方向の信号　0の時青色　１黄色　２赤色
+Agt_Step{
+	My.time = My.time + 1
+	If My.time > 100 Then 
+				If My.changetraffic == 0 Then
+					My.changetraffic = 1
+					My.color = COLOR_YELLOW
+				End If
+				
+	If My.time > 120 Then
+				If My.changetraffic == 1 Then
+					My.changetraffic = 2
+					My.color = COLOR_RED
+					My.time = 0			
+	     Else If My.changetraffic == 2 Then
+	       My.changetraffic = 0
+	       My.color = COLOR_GREEN
+					My.time = 0	
+			 End If
+	End If End If End If
+}
+#end_rule UNIVERSE.TRAFFIC.T_LIGHT
+
+
+
+
+//-------------------------------------------------------
+// Agent Rule
+//-------------------------------------------------------
+#begin_rule UNIVERSE.TRAFFIC.T_LIGHT2
+Agt_Init{
+	My.color = COLOR_RED
+	My.X = 18
+	My.Y = 18
+	My.changetraffic = 2
+}
+
+//縦方向の信号　0の時青色　１黄色　２赤色
+Agt_Step{
+	My.time = My.time + 1
+	If My.time > 100 Then 
+				If My.changetraffic == 0 Then
+					My.changetraffic = 1
+					My.color = COLOR_YELLOW
+				End If
+				
+	If My.time > 120 Then
+				If My.changetraffic == 1 Then
+					My.changetraffic = 2
+					My.color = COLOR_RED
+					My.time = 0			
+	     Else If My.changetraffic == 2 Then
+	       My.changetraffic = 0
+	       My.color = COLOR_GREEN
+					My.time = 0	
+			 End If
+	End If End If End If
+}
+#end_rule UNIVERSE.TRAFFIC.T_LIGHT2
+
+
+
+
+//-------------------------------------------------------
+// Simulation Definition Division
+//-------------------------------------------------------
+Single_Simulation {
+    Step_Max = 0;
+    Time_Max = 0;
+    End_Condition = "";
+    Exec_Wait = 0;
+    Exec_Wait_Max = 1000;
+    Random_Generator = Java_Standard;
+    Exec_Order = Random;
+    Exec_Order_Random_First_Step_Only = No;
+    Random_Seed = 0;
+    Redraw_Timing = Step;
+    Redraw_Interval = 1;
+    Garbage_Interval = 0;
+}
+
+
+//-------------------------------------------------------
+// Simulation Loop Definition Division
+//-------------------------------------------------------
+Repeat_Simulation {
+    Value_Change = None;
+    Initial_Value_Change_None {
+        Repeat_Max = 1;
+    }
+}
+
+
+//-------------------------------------------------------
+// 2 Dimension Map Display Definition Division
+//-------------------------------------------------------
+Map_Output {
+    Map_Space_Name = "Universe.traffic";
+    Map_Name = "traffic";
+    Title = "";
+    Disable = No;
+    Background_Color = 255, 255, 255;
+    Position_x = 0;
+    Position_y = 0;
+    Size_x = 1440;
+    Size_y = 826;
+    Map_Cell_Size = 4;
+    Remarks = Yes;
+    Legend_Pos = Top;
+    Font_Name = "Dialog";
+    Font_Char_Set = 81;
+    Font_Size = 12.0;
+    Font_Style = 0;
+    Font_Color = 0, 0, 0;
+    Font_Background_Color = 255, 255, 255;
+    FastDraw = Yes;
+    Draw_Timing = Simulation_Step;
+    Draw_Interval = 1;
+    Axis_Label = "", "";
+    Draw_Range = 0, 0, 50, 50;
+    Ruled_Line = Yes;
+    Text_Display = No;
+    Text_Display_Variable_Name = "";
+    Chess_Type_Display_Position = No;
+    Background_Transparent = No;
+    Target_Layer = 0;
+    Coordinate_Display = No;
+    Space_Kind = Square_2D;
+    BG_Pict = Yes;
+    BG_Type = 0;
+    BG_Var_Name = "";
+    BG_File_Name = "road.png";
+    Origin_Position = 2;
+    Output_Group_Name = "";
+    Output {
+        Map_Element_Name = "car";
+        Map_Element = Agent_Variable;
+        Output_Expression = "Universe.traffic.car";
+        Draw_Line = No;
+        Collection_Name = "";
+        Line_Type = 0;
+        Line_Arrow = 0;
+        Line_Width = 0;
+        Line_Color = 0, 0, 0;
+        Line_Type_Variable = "";
+        Line_Arrow_Variable = "";
+        Line_Width_Variable = "";
+        Line_Color_Variable = "";
+        Agent_Color = "Universe.traffic.car.color";
+        Marker_Id = 1;
+        Effective_Figures = 0;
+        Format_Id = 0;
+        Agent_Image_Direction = No;
+        Icon_Type = 0;
+        Icon_Var_Name = "";
+        Icon_Transparent = No;
+        Icon_Enlarg_Reduce = No;
+        Icon_File_Name = "";
+        Num_Display = No;
+        Num_Var_Name = "";
+        Agent_Image_Magnify_by_value = Yes;
+        Agent_Image_Magnify_Value = 1.0;
+        Agent_Image_Magnify_Variable_Name = "Universe.traffic.car.ID";
+        Agent_Image_Transparency_by_value = Yes;
+        Agent_Image_Transparency_Value = 0.0;
+        Agent_Image_Transparency_Variable_Name = "Universe.traffic.car.ID";
+        Font_Name = "Dialog";
+        Font_Char_Set = 0;
+        Font_Size = 12.0;
+        Font_Style = 0;
+        Font_Color = 0, 0, 0;
+        Font_Background_Color = 0, 0, 0;
+    }
+    Output {
+        Map_Element_Name = "car2";
+        Map_Element = Agent_Variable;
+        Output_Expression = "Universe.traffic.car2";
+        Draw_Line = No;
+        Collection_Name = "";
+        Line_Type = 0;
+        Line_Arrow = 0;
+        Line_Width = 0;
+        Line_Color = 0, 0, 0;
+        Line_Type_Variable = "";
+        Line_Arrow_Variable = "";
+        Line_Width_Variable = "";
+        Line_Color_Variable = "";
+        Agent_Color = "Universe.traffic.car2.color";
+        Marker_Id = 1;
+        Effective_Figures = 0;
+        Format_Id = 0;
+        Agent_Image_Direction = No;
+        Icon_Type = 0;
+        Icon_Var_Name = "";
+        Icon_Transparent = No;
+        Icon_Enlarg_Reduce = No;
+        Icon_File_Name = "";
+        Num_Display = No;
+        Num_Var_Name = "";
+        Agent_Image_Magnify_by_value = Yes;
+        Agent_Image_Magnify_Value = 1.0;
+        Agent_Image_Magnify_Variable_Name = "Universe.traffic.car2.ID";
+        Agent_Image_Transparency_by_value = No;
+        Agent_Image_Transparency_Value = 0.0;
+        Agent_Image_Transparency_Variable_Name = "Universe.traffic.car2.color";
+        Font_Name = "Dialog";
+        Font_Char_Set = 0;
+        Font_Size = 12.0;
+        Font_Style = 0;
+        Font_Color = 0, 0, 0;
+        Font_Background_Color = 0, 0, 0;
+    }
+    Output {
+        Map_Element_Name = "car3";
+        Map_Element = Agent_Variable;
+        Output_Expression = "Universe.traffic.car3";
+        Draw_Line = No;
+        Collection_Name = "";
+        Line_Type = 0;
+        Line_Arrow = 0;
+        Line_Width = 0;
+        Line_Color = 0, 0, 0;
+        Line_Type_Variable = "";
+        Line_Arrow_Variable = "";
+        Line_Width_Variable = "";
+        Line_Color_Variable = "";
+        Agent_Color = "Universe.traffic.car3.color";
+        Marker_Id = 1;
+        Effective_Figures = 0;
+        Format_Id = 0;
+        Agent_Image_Direction = No;
+        Icon_Type = 0;
+        Icon_Var_Name = "";
+        Icon_Transparent = No;
+        Icon_Enlarg_Reduce = No;
+        Icon_File_Name = "";
+        Num_Display = No;
+        Num_Var_Name = "";
+        Agent_Image_Magnify_by_value = Yes;
+        Agent_Image_Magnify_Value = 1.0;
+        Agent_Image_Magnify_Variable_Name = "Universe.traffic.car3.ID";
+        Agent_Image_Transparency_by_value = No;
+        Agent_Image_Transparency_Value = 0.0;
+        Agent_Image_Transparency_Variable_Name = "Universe.traffic.car3.color";
+        Font_Name = "Dialog";
+        Font_Char_Set = 0;
+        Font_Size = 12.0;
+        Font_Style = 0;
+        Font_Color = 0, 0, 0;
+        Font_Background_Color = 0, 0, 0;
+    }
+    Output {
+        Map_Element_Name = "car4";
+        Map_Element = Agent_Variable;
+        Output_Expression = "Universe.traffic.car4";
+        Draw_Line = No;
+        Collection_Name = "";
+        Line_Type = 0;
+        Line_Arrow = 0;
+        Line_Width = 0;
+        Line_Color = 0, 0, 0;
+        Line_Type_Variable = "";
+        Line_Arrow_Variable = "";
+        Line_Width_Variable = "";
+        Line_Color_Variable = "";
+        Agent_Color = "Universe.traffic.car4.color";
+        Marker_Id = 1;
+        Effective_Figures = 0;
+        Format_Id = 0;
+        Agent_Image_Direction = No;
+        Icon_Type = 0;
+        Icon_Var_Name = "";
+        Icon_Transparent = No;
+        Icon_Enlarg_Reduce = No;
+        Icon_File_Name = "";
+        Num_Display = No;
+        Num_Var_Name = "";
+        Agent_Image_Magnify_by_value = Yes;
+        Agent_Image_Magnify_Value = 1.0;
+        Agent_Image_Magnify_Variable_Name = "Universe.traffic.car4.ID";
+        Agent_Image_Transparency_by_value = Yes;
+        Agent_Image_Transparency_Value = 0.0;
+        Agent_Image_Transparency_Variable_Name = "Universe.traffic.car4.ID";
+        Font_Name = "Dialog";
+        Font_Char_Set = 0;
+        Font_Size = 12.0;
+        Font_Style = 0;
+        Font_Color = 0, 0, 0;
+        Font_Background_Color = 0, 0, 0;
+    }
+    Output {
+        Map_Element_Name = "信号機";
+        Map_Element = Agent_Variable;
+        Output_Expression = "Universe.traffic.t_light";
+        Draw_Line = No;
+        Collection_Name = "";
+        Line_Type = 0;
+        Line_Arrow = 0;
+        Line_Width = 0;
+        Line_Color = 0, 0, 0;
+        Line_Type_Variable = "";
+        Line_Arrow_Variable = "";
+        Line_Width_Variable = "";
+        Line_Color_Variable = "";
+        Agent_Color = "Universe.traffic.t_light.color";
+        Marker_Id = 1;
+        Effective_Figures = 0;
+        Format_Id = 0;
+        Agent_Image_Direction = No;
+        Icon_Type = 0;
+        Icon_Var_Name = "";
+        Icon_Transparent = No;
+        Icon_Enlarg_Reduce = No;
+        Icon_File_Name = "";
+        Num_Display = No;
+        Num_Var_Name = "";
+        Agent_Image_Magnify_by_value = Yes;
+        Agent_Image_Magnify_Value = 1.0;
+        Agent_Image_Magnify_Variable_Name = "Universe.traffic.t_light.ID";
+        Agent_Image_Transparency_by_value = Yes;
+        Agent_Image_Transparency_Value = 0.0;
+        Agent_Image_Transparency_Variable_Name = "Universe.traffic.t_light.ID";
+        Font_Name = "Dialog";
+        Font_Char_Set = 0;
+        Font_Size = 12.0;
+        Font_Style = 0;
+        Font_Color = 0, 0, 0;
+        Font_Background_Color = 0, 0, 0;
+    }
+    Output {
+        Map_Element_Name = "信号機2";
+        Map_Element = Agent_Variable;
+        Output_Expression = "Universe.traffic.t_light2";
+        Draw_Line = No;
+        Collection_Name = "";
+        Line_Type = 0;
+        Line_Arrow = 0;
+        Line_Width = 0;
+        Line_Color = 0, 0, 0;
+        Line_Type_Variable = "";
+        Line_Arrow_Variable = "";
+        Line_Width_Variable = "";
+        Line_Color_Variable = "";
+        Agent_Color = "Universe.traffic.t_light2.color";
+        Marker_Id = 1;
+        Effective_Figures = 0;
+        Format_Id = 0;
+        Agent_Image_Direction = No;
+        Icon_Type = 0;
+        Icon_Var_Name = "";
+        Icon_Transparent = No;
+        Icon_Enlarg_Reduce = No;
+        Icon_File_Name = "";
+        Num_Display = No;
+        Num_Var_Name = "";
+        Agent_Image_Magnify_by_value = Yes;
+        Agent_Image_Magnify_Value = 1.0;
+        Agent_Image_Magnify_Variable_Name = "Universe.traffic.t_light2.ID";
+        Agent_Image_Transparency_by_value = Yes;
+        Agent_Image_Transparency_Value = 0.0;
+        Agent_Image_Transparency_Variable_Name = "Universe.traffic.t_light2.ID";
+        Font_Name = "Dialog";
+        Font_Char_Set = 0;
+        Font_Size = 12.0;
+        Font_Style = 0;
+        Font_Color = 0, 0, 0;
+        Font_Background_Color = 0, 0, 0;
+    }
+}
+
+
+//-------------------------------------------------------
+// Control Panel Definition Division
+//-------------------------------------------------------
+Control_Panel {
+    Display_Area = 0, 25, 10, 38;
+    Display_Type = 0;
+}
+
+
+//-------------------------------------------------------
+// Space Initial Value Definition Divsion
+//-------------------------------------------------------
+Space_Initial {
+}
+
+
+//-------------------------------------------------------
+// Other Miscellaneous Data Definition Division
+//-------------------------------------------------------
+Others_Data {
+    Indent = 4;
+    Rule_Colored = Yes;
+    Rule_LineNo = Yes;
+    Window_Hide_Run = 1;
+    Debug_Position_x = 75;
+    Debug_Position_y = 75;
+    Debug_Size_x = 400;
+    Debug_Size_y = 200;
+    Console_Position_x = 0;
+    Console_Position_y = 0;
+    Console_Size_x = 800;
+    Console_Size_y = 598;
+    Componen_Tree_Position_x = 0;
+    Componen_Tree_Position_y = 0;
+    Componen_Tree_Size_x = 800;
+    Componen_Tree_Size_y = 598;
+    Console_Background_Color = 16777215;
+    Console_Foreground_Color = 255;
+    Console_DisplayLines_Max = 500;
+    plug_in_module_name = "";
+    Font_Name = "Dialog";
+    Font_Char_Set = 0;
+    Font_Size = 14.0;
+    Font_Style = 0;
+    Font_Color = 0, 0, 0;
+    Font_Background_Color = 0, 0, 0;
+    Window_Font_Name = "Dialog";
+    Window_Font_Char_Set = 0;
+    Window_Font_Size = 14.0;
+    Window_Font_Style = 0;
+    Window_Font_Color = 0, 0, 0;
+    Window_Font_Background_Color = 0, 0, 0;
+}
+
+
+//-------------------------------------------------------
+// Network Information Definition Division
+//-------------------------------------------------------
+Network_Info {
+    Global_Space_Area = 0, 0, 100, 100;
+    Local_Space_Info {
+    }
+}
+
+
+//-------------------------------------------------------
+// Window Location Definition Division
+//-------------------------------------------------------
+Window_Rectangle {
+    Window_Name = Main_Window, 0, 25, 800, 700;
+    Window_Name = Output_Setting_Window, 175, 175, 480, 350;
+    Window_Name = Artisoc_Help_Window, 10, 10, 400, 300;
+}
+
+
+//-------------------------------------------------------
+// Help Favorite Division
+//-------------------------------------------------------
+Help_Favorite {
+}
+
+
+//-------------------------------------------------------
+// Model Description Division
+//-------------------------------------------------------
+Model_Description {
+    Universe {
+        Function Univ_Init {
+        }
+        Function Univ_Step_Begin {
+        }
+        Function Univ_Step_End {
+        }
+        Function Univ_Finish {
+        }
+    }
+    Space Universe.traffic {
+        Memo = "交差点";
+    }
+    Agent Universe.traffic.car {
+        Function Agt_Init {
+        }
+        Function Agt_Step {
+        }
+    }
+    Agent Universe.traffic.road {
+        Function Agt_Init {
+        }
+        Function Agt_Step {
+        }
+    }
+    Agent Universe.traffic.start {
+        Variable createspeed = "エージェントの生成";
+        Function Agt_Init {
+        }
+        Function Agt_Step {
+        }
+    }
+    Agent Universe.traffic.car2 {
+        Function Agt_Init {
+        }
+        Function Agt_Step {
+        }
+    }
+    Agent Universe.traffic.car3 {
+        Function Agt_Init {
+        }
+        Function Agt_Step {
+        }
+    }
+    Agent Universe.traffic.car4 {
+        Function Agt_Init {
+        }
+        Function Agt_Step {
+        }
+    }
+    Agent Universe.traffic.t_light {
+        Function Agt_Init {
+        }
+        Function Agt_Step {
+        }
+    }
+    Agent Universe.traffic.t_light2 {
+        Function Agt_Init {
+        }
+        Function Agt_Step {
+        }
+    }
+}
